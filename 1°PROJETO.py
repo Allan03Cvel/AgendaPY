@@ -11,8 +11,9 @@ def menu():
     [2]LISTAR CONTATO                  
     [3]BUSCAR CONTATO PELO NOME
     [4]DELETAR CONTATO 
-    [5]SAIR
-                                        
+    [5]ATUALIZAR CONTATO                                   
+    [6]SAIR
+                      
     ==============================================================================
     ESCOLHA UMA OPÇÃO:                   
     ''')
@@ -25,6 +26,8 @@ def menu():
             BuscarContatoPeloNome()
         elif opcao == "4":
             DeletarContato()
+        elif opcao == "5":
+            AtualizarContato()
         else:
             Sair()
             # return opcao
@@ -91,6 +94,33 @@ def DeletarContato():
         print("ERRO: Contato não encontrado!!!")
         return DeletarContato()
         
+
+def AtualizarContato():
+    nomeDeletado = input("Digite o nome do contato a ser Atualizado: \n").lower()
+    encontrado = False
+    agenda = open("agenda.txt","r")
+    aux = []
+    aux2 = []
+    for i in agenda:
+        aux.append(i)
+    for i in range(0, len(aux)):
+        if nomeDeletado not in aux[i].lower():
+            aux2.append(aux[i])
+    agenda = open("agenda.txt","w")
+    for i in aux2:
+        agenda.write(i)
+    nome = input("Digite o nome do seu contato atualizado: \n")
+    ID = input("Escolha a ID do seu contato atualizado: \n")
+    telefone = input("Coloque o telefone do contato atualizado: \n")
+    email = input("Coloque o email do contato atualizado: \n")
+    try:
+        agenda = open("agenda.txt","a")
+        dados = f'{nome};{ID};{telefone};{email} \n'
+        agenda.write(dados)
+        agenda.close()
+        print("Contato atualizado com sucesso !!!!")
+    except:
+        print("Erro na atualização do contato")
 
 def Sair():
     print(f"Ate mais... !!!!!")
