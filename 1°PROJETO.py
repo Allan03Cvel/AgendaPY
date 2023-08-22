@@ -72,28 +72,38 @@ def BuscarContatoPeloNome():
 
 
 def DeletarContato():
-    nomeDeletado = input("Digite o nome do contato a ser deletado: \n").lower()
+    tentativas = 0
+    max_tentativas = 3
     encontrado = False
-    agenda = open("agenda.txt","r")
-    aux = []
-    aux2 = []
-    for i in agenda:
-        aux.append(i)
-    for i in range(0, len(aux)):
-        if nomeDeletado not in aux[i].lower():
-            aux2.append(aux[i])
-    agenda = open("agenda.txt","w")
-    for i in aux2:
-        agenda.write(i)
-        encontrado = True
-    agenda.close()
-    print(f"Contato deletado com sucesso!!")
+    
+    while tentativas < max_tentativas:
+        nomeDeletado = input("Digite o nome do contato a ser deletado: \n").lower()
+        
+        with open("agenda.txt", "r") as agenda:
+            aux = agenda.readlines() #para ler as linhas
+        
+        aux2 = []
+        for i in range(len(aux)):
+            if nomeDeletado not in aux[i].lower():
+                aux2.append(aux[i])
+            else:
+                encontrado = True
+        
+        if encontrado:
+            with open("agenda.txt", "w") as agenda:
+                for i in aux2:
+                    agenda.write(i)
+            print("Contato deletado com sucesso!!")
+            return
+        else:
+            print("ERRO: Contato não encontrado!!!")
+            tentativas += 1
+    
+    print("Limite de tentativas excedido. Saindo...")
     
 
-    if not encontrado:
-        print("ERRO: Contato não encontrado!!!")
-        return DeletarContato()
-        
+    DeletarContato()
+
 
 def AtualizarContato():
     nomeDeletado = input("Digite o nome do contato a ser Atualizado: \n").lower()
